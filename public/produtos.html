@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos</title>
+    <style>
+        /* Estilos CSS */
+        
+        .produto-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+        }
+
+        .produto-card img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .produto-nome {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .produto-valor {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+<div id="produtos-container">
+    <!-- Os cards dos produtos serão adicionados aqui dinamicamente -->
+</div>
+
+<script>
+    // Função para carregar os dados dos produtos do JSON
+    async function carregarProdutos() {
+        try {
+            const response = await fetch('produtos.json');
+            const data = await response.json();
+            return data.produtos;
+        } catch (error) {
+            console.error('Erro ao carregar os produtos:', error);
+            return [];
+        }
+    }
+
+    // Função para adicionar produto ao carrinho
+    function adicionarAoCarrinho(nome, valor) {
+        // Aqui você pode enviar o nome e o valor do produto para o servidor
+        alert(`Produto "${nome}" adicionado ao carrinho!`);
+    }
+
+    // Função para criar o card de produto
+    function criarProdutoCard(produto) {
+        const container = document.getElementById('produtos-container');
+
+        const card = document.createElement('div');
+        card.classList.add('produto-card');
+
+        const imagem = document.createElement('img');
+        imagem.src = produto.imagem;
+        imagem.alt = produto.nome;
+
+        const nome = document.createElement('p');
+        nome.classList.add('produto-nome');
+        nome.textContent = produto.nome;
+
+        const valor = document.createElement('p');
+        valor.classList.add('produto-valor');
+        valor.textContent = `R$ ${produto.valor.toFixed(2)}`;
+
+        const botao = document.createElement('button');
+        botao.textContent = 'Adicionar ao carrinho';
+        botao.addEventListener('click', () => {
+            adicionarAoCarrinho(produto.nome, produto.valor);
+        });
+
+        card.appendChild(imagem);
+        card.appendChild(nome);
+        card.appendChild(valor);
+        card.appendChild(botao);
+
+        container.appendChild(card);
+    }
+
+    // Carregar os produtos e criar os cards quando a página carregar
+    window.addEventListener('load', async () => {
+        const produtos = await carregarProdutos();
+        produtos.forEach(produto => {
+            criarProdutoCard(produto);
+        });
+    });
+</script>
+
+</body>
+</html>

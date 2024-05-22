@@ -51,58 +51,41 @@ app.post('/login', (req, res) => {
     if (!usuario || usuario.senha !== senha) {
         return res.status(401).send('Credenciais inválidas');
     }
-
-    // Se o login for bem-sucedido, redireciona para a calculadora
-    res.redirect('/calculadora.html');
-});
-
-
-
-// Endpoint para a página da calculadora
-app.get('/calculadora', (req, res) => {
-    // Aqui você deve enviar a página HTML da calculadora
-});
-
-// Função para calcular as raízes da equação do segundo grau
-function calcularRaizes(a, b, c) {
-  const delta = b * b - 4 * a * c;
-  if (delta < 0) {
-      return 'Não existem raízes reais';
-  } else if (delta === 0) {
-      const x = -b / (2 * a);
-      return `Raiz única: ${x}`;
-  } else {
-      const x1 = (-b + Math.sqrt(delta)) / (2 * a);
-      const x2 = (-b - Math.sqrt(delta)) / (2 * a);
-      return `Raízes: ${x1} e ${x2}`;
-  }
+})
+// Função para carregar os dados dos produtos do arquivo JSON
+function carregarProdutos() {
+    const rawData = fs.readFileSync('produtos.json');
+    return JSON.parse(rawData);
 }
 
-// Rota para calcular a equação do segundo grau
-app.post('/calculadora', (req, res) => {
-  const { a, b, c } = req.body;
-
-  // Validar se os coeficientes foram fornecidos
-  if (!a || !b || !c) {
-      return res.status(400).json({ error: 'Coeficientes não fornecidos' });
-  }
-
-  // Converter os coeficientes para números
-  const coefA = parseFloat(a);
-  const coefB = parseFloat(b);
-  const coefC = parseFloat(c);
-
-  // Verificar se os coeficientes são números válidos
-  if (isNaN(coefA) || isNaN(coefB) || isNaN(coefC)) {
-      return res.status(400).json({ error: 'Coeficientes inválidos' });
-  }
-
-  // Calcular as raízes da equação do segundo grau
-  const resultado = calcularRaizes(coefA, coefB, coefC);
-
-  res.status(200).json({ resultado });
+// Endpoint para a página da calculadora
+app.get('/calculo', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'calculo.html'));
 });
 
+// Rota para calcular a soma dos valores dos produtos selecionados
+app.post('/calculo', (req, res) => {
+    const { produtos } = req.body;
+
+    // Verificar se produtos foram fornecidos
+    if (!produtos || produtos.length === 0) {
+        return res.status(400).json({ error: 'Nenhum produto selecionado' });
+    }
+
+    // Carregar os dados dos produtos do arquivo JSON
+    const listaProdutos = carregarProdutos();
+
+    // Calcular a soma dos valores dos produtos selecionados
+    let total = 0;
+    produtos.forEach(produtoId => {
+        const produto = listaProdutos.find(p => p.id === produtoId);
+        if (produto) {
+            total += produto.valor;
+        }
+    });
+
+    res.status(200).json({ total });
+});
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
