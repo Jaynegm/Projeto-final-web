@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const PORT = 3000;
 
@@ -51,41 +52,42 @@ app.post('/login', (req, res) => {
     if (!usuario || usuario.senha !== senha) {
         return res.status(401).send('Credenciais inválidas');
     }
-})
+
+    // Redireciona para a página de produtos após o login bem-sucedido
+    res.redirect('/produtos.html');
+});
+
+// Endpoint para a página de produtos
+app.get('/produtos.html', (req, res) => {
+    try {
+        // Carregar os produtos do arquivo JSON
+        const produtos = carregarProdutos();
+        res.json(produtos); // Envie os produtos para a página HTML
+    } catch (error) {
+        console.error('Erro ao carregar produtos:', error);
+        res.status(500).send('Erro ao carregar produtos');
+    }
+});
+
 // Função para carregar os dados dos produtos do arquivo JSON
 function carregarProdutos() {
-    const rawData = fs.readFileSync('produtos.json');
-    return JSON.parse(rawData);
+    const filePath = path.join(__dirname, 'cardapio.json');
+    const rawData = fs.readFileSync(filePath);
+    const cardapio = JSON.parse(rawData);
+    // Combine todas as categorias de produtos em uma lista única
+    const allProducts = [].concat(cardapio.pizzas, cardapio.massas, cardapio.risotos, cardapio.sobremesas);
+    return allProducts;
 }
-
 // Endpoint para a página da calculadora
-app.get('/calculo', (req, res) => {
+app.get('/calculo.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'calculo.html'));
 });
 
-// Rota para calcular a soma dos valores dos produtos selecionados
-app.post('/calculo', (req, res) => {
-    const { produtos } = req.body;
-
-    // Verificar se produtos foram fornecidos
-    if (!produtos || produtos.length === 0) {
-        return res.status(400).json({ error: 'Nenhum produto selecionado' });
-    }
-
-    // Carregar os dados dos produtos do arquivo JSON
-    const listaProdutos = carregarProdutos();
-
-    // Calcular a soma dos valores dos produtos selecionados
-    let total = 0;
-    produtos.forEach(produtoId => {
-        const produto = listaProdutos.find(p => p.id === produtoId);
-        if (produto) {
-            total += produto.valor;
-        }
-    });
-
-    res.status(200).json({ total });
-});
+// Endpoint para adicionar produtos ao carrinho e redirecionar para a página de cálculo
+function adicionarAoCarrinho(item, quantidade) {
+    console.log(`Adicionado ao carrinho: ${item.nome}, Quantidade: ${quantidade}`);
+    window.location.href = '/calculo.html'; // Redireciona para a página de cálculo
+  }
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);

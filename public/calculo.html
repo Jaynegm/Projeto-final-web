@@ -1,99 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrinho</title>
-    <style>
-        /* Estilos CSS */
-
-        .produto-card {
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .produto-card img {
-            max-width: 50px;
-            max-height: 50px;
-            margin-right: 10px;
-        }
-
-        .lateral {
-            position: fixed;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #f0f0f0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-    </style>
+    <title>Calculadora</title>
 </head>
 <body>
+    <h1>Calculadora</h1>
 
-<!-- Seção de produtos -->
-<div id="produtos">
-    <!-- Os cards dos produtos selecionados serão adicionados aqui dinamicamente -->
-</div>
+    <div id="produtos-selecionados">
+        <!-- Os produtos selecionados serão exibidos aqui -->
+    </div>
 
-<!-- Lateral com a soma dos valores dos produtos selecionados -->
-<div class="lateral" id="somaProdutos">
-    <h3>Total:</h3>
-    <p id="total">R$ 0.00</p>
-</div>
+    <label for="caixinha">Valor da Caixinha:</label>
+    <input type="number" id="caixinha" name="caixinha">
 
-<script>
-    // Função para atualizar a soma dos valores dos produtos selecionados
-    function atualizarSoma(produtosSelecionados) {
-        let soma = 0;
-        produtosSelecionados.forEach(produto => {
-            soma += produto.valor;
+    <button id="calcular">Calcular</button>
+
+    <div id="resultado">
+        <!-- O resultado do cálculo será exibido aqui -->
+    </div>
+
+    <script>
+        // Função para carregar os produtos do carrinho da sessionStorage
+        function carregarProdutosDoCarrinho() {
+            const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+            const container = document.getElementById('produtos-selecionados');
+
+            carrinho.forEach(produto => {
+                const p = document.createElement('p');
+                p.textContent = `${produto.quantidade}x ${produto.nome} - R$ ${(produto.quantidade * produto.valor).toFixed(2)}`;
+                container.appendChild(p);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarProdutosDoCarrinho();
+
+            document.getElementById('calcular').addEventListener('click', function() {
+                // Lógica para calcular a soma dos valores dos produtos e a caixinha
+                // Aqui você pode usar a lógica que já implementou ou adaptar conforme necessário
+            });
         });
-        document.getElementById('total').textContent = `R$ ${soma.toFixed(2)}`;
-    }
-
-    // Função para adicionar um card de produto selecionado
-    function adicionarProdutoCard(produto) {
-        const produtosDiv = document.getElementById('produtos');
-
-        // Criar o elemento do card
-        const card = document.createElement('div');
-        card.classList.add('produto-card');
-
-        // Adicionar a imagem do produto, nome e valor
-        const imagem = document.createElement('img');
-        imagem.src = produto.imagem;
-        const nome = document.createElement('p');
-        nome.textContent = produto.nome;
-        const valor = document.createElement('p');
-        valor.textContent = `R$ ${produto.valor.toFixed(2)}`;
-
-        card.appendChild(imagem);
-        card.appendChild(nome);
-        card.appendChild(valor);
-
-        // Adicionar o card à seção de produtos
-        produtosDiv.appendChild(card);
-    }
-
-    // Simulação de dados de produtos selecionados
-    const produtosSelecionados = [
-        { nome: 'Produto 1', valor: 10.00, imagem: 'imagem_produto_1.jpg' },
-        { nome: 'Produto 2', valor: 15.00, imagem: 'imagem_produto_2.jpg' }
-    ];
-
-    // Adicionar os cards dos produtos selecionados e atualizar a soma
-    produtosSelecionados.forEach(produto => {
-        adicionarProdutoCard(produto);
-    });
-    atualizarSoma(produtosSelecionados);
-</script>
-
+    </script>
 </body>
 </html>

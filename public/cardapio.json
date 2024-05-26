@@ -1,0 +1,132 @@
+{
+  "cardapio": {
+    "pizzas": [
+      {
+        "nome": "Pizza Margherita",
+        "ingredientes": ["Molho de tomate", "Mozzarella", "Manjericão fresco", "Azeite de oliva", "Sal"],
+        "valor": 35.99,
+        "imagem": "./imagens/pizzamarguerita.jpg"
+      },
+      {
+        "nome": "Pizza Pepperoni",
+        "ingredientes": ["Molho de tomate", "Mozzarella", "Pepperoni", "Orégano", "Azeite de oliva"],
+        "valor": 38.99,
+        "imagem": "./imagens/pepperoni.jpg"
+      },
+      {
+        "nome": "Pizza Quattro Stagioni",
+        "ingredientes": ["Molho de tomate", "Mozzarella", "Presunto", "Cogumelos", "Azeitonas"],
+        "valor": 42.99,
+        "imagem": "./imagens/quattro.jpg"
+      },
+      {
+        "nome": "Pizza Diavola",
+        "ingredientes": ["Molho de tomate", "Mozzarella", "Calabresa", "Pimenta calabresa", "Azeite de oliva"],
+        "valor": 40.99,
+        "imagem": "./imagens/diavola.jpg"
+      },
+      {
+        "nome": "Pizza Capricciosa",
+        "ingredientes": ["Molho de tomate", "Mozzarella", "Presunto", "Cogumelos", "Azeitonas"],
+        "valor": 42.99,
+        "imagem": "./imagens/capricciosa.webp"
+      }
+    ],
+    "massas": [
+      {
+        "nome": "Spaghetti alla Carbonara",
+        "ingredientes": ["Espaguete", "Ovos", "Pancetta", "Queijo Parmesão", "Pimenta preta"],
+        "valor": 29.99,
+        "imagem": "./imagens/carbonara.jpg"
+      },
+      {
+        "nome": "Fettuccine Alfredo",
+        "ingredientes": ["Fettuccine", "Manteiga", "Creme de leite", "Queijo Parmesão", "Noz-moscada"],
+        "valor": 31.99,
+        "imagem": "./imagens/fettucine.jpeg"
+      },
+      {
+        "nome": "Ravioli al Pomodoro",
+        "ingredientes": ["Ravioli", "Molho de tomate", "Manjericão fresco", "Queijo Parmesão", "Azeite de oliva"],
+        "valor": 33.99,
+        "imagem": "./imagens/raviolli.jpg"
+      },
+      {
+        "nome": "Lasanha Bolonhesa",
+        "ingredientes": ["Massa de lasanha", "Molho bolonhesa", "Mozzarella", "Queijo Parmesão", "Bechamel"],
+        "valor": 34.99,
+        "imagem": "./imagens/bolonhesa.webp"
+      },
+      {
+        "nome": "Gnocchi alla Sorrentina",
+        "ingredientes": ["Nhoque", "Molho de tomate", "Mozzarella", "Manjericão fresco", "Parmesão"],
+        "valor": 32.99,
+        "imagem": "./imagens/gnocchi.webp"
+      }
+    ],
+    "risotos": [
+      {
+        "nome": "Risoto de Funghi",
+        "ingredientes": ["Arroz Arbóreo", "Cogumelos", "Caldo de legumes", "Creme de leite", "Queijo Parmesão"],
+        "valor": 39.99,
+        "imagem": "./imagens/funghi-secchi.jpeg"
+      },
+      {
+        "nome": "Risoto de Frutos do Mar",
+        "ingredientes": ["Arroz Arbóreo", "Frutos do mar", "Caldo de peixe", "Vinho branco", "Queijo Parmesão"],
+        "valor": 45.99,
+        "imagem": "./imagens/frutos-do-mar.avif"
+      },
+      {
+        "nome": "Risoto de Limão Siciliano",
+        "ingredientes": ["Arroz Arbóreo", "Limão siciliano", "Caldo de legumes", "Vinho branco", "Queijo Parmesão"],
+        "valor": 37.99,
+        "imagem": "./imagens/risoto-de-limao-siciliano.webp"
+      },
+      {
+        "nome": "Risoto de Aspargos",
+        "ingredientes": ["Arroz Arbóreo", "Aspargos", "Caldo de legumes", "Vinho branco", "Queijo Parmesão"],
+        "valor": 38.99,
+        "imagem": "./imagens/Risoto-de-aspargos-500x500.webp"
+      },
+      {
+        "nome": "Risoto de Abóbora",
+        "ingredientes": ["Arroz Arbóreo", "Abóbora", "Caldo de legumes", "Vinho branco", "Queijo Parmesão"],
+        "valor": 36.99,
+        "imagem": "./imagens/abobora.webp"
+      }
+    ],
+    "sobremesas": [
+      {
+        "nome": "Tiramisù",
+        "ingredientes": ["Queijo Mascarpone", "Café", "Biscoitos Savoiardi", "Cacau em pó", "Açúcar"],
+        "valor": 15.99,
+        "imagem": "./imagens/tiramisu.jpg"
+      },
+      {
+        "nome": "Panna Cotta",
+        "ingredientes": ["Creme de leite", "Açúcar", "Gelatina", "Baunilha", "Frutas vermelhas"],
+        "valor": 12.99,
+        "imagem": "./imagens/PannaCotta.webp"
+      },
+      {
+        "nome": "Cannoli Siciliani",
+        "ingredientes": ["Massa de cannoli", "Ricota", "Açúcar", "Frutas cristalizadas", "Baunilha"],
+        "valor": 17.99,
+        "imagem": "./imagens/cannoli.jpg"
+      },
+      {
+        "nome": "Gelato",
+        "ingredientes": ["Leite", "Açúcar", "Frutas", "Nata", "Chocolate"],
+        "valor": 10.99,
+        "imagem": "./imagens/gelato.jpg"
+      },
+      {
+        "nome": "Profiteroles",
+        "ingredientes": ["Massa de choux", "Creme de confeiteiro", "Chocolate", "Açúcar", "Manteiga"],
+        "valor": 16.99,
+        "imagem": "./imagens/Profiteroles.jpg"
+      }
+    ]
+  }
+}
