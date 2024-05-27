@@ -117,11 +117,35 @@
     .comprar-btn:hover {
       background-color: #218838;
     }
+    #filtro-categoria{
+      border-radius: 8px;
+      width: 100px;
+      height: 30px;
+      border: none;
+    }
+    #barra-pesquisa{
+      border-radius: 8px;
+      width: 300px;
+      height: 30px;
+      border: none;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
+    <div class="container">
     <h2 class="titulo">Cardápio</h2>
+     <!-- Filtro de categorias e barra de pesquisa -->
+     <div class="filtros">
+      <select id="filtro-categoria">
+        <option value="todas">Todas</option>
+        <option value="pizzas">Pizzas</option>
+        <option value="massas">Massas</option>
+        <option value="risotos">Risotos</option>
+        <option value="sobremesas">Sobremesas</option>
+      </select>
+
+      <input type="text" id="barra-pesquisa" placeholder="Pesquisar...">
+    </div>
     <div id="cardapio-container" class="row">
       <!-- Os itens do cardápio serão carregados aqui -->
     </div>
@@ -239,6 +263,122 @@
     window.onload = function() {
       carregarCardapio();
     };
+
+  
+  function carregarCardapio() {
+    fetch('cardapio.json')
+      .then(response => response.json())
+      .then(cardapio => {
+        window.cardapio = cardapio; // Salva o cardápio em uma variável global
+        exibirCardapio(cardapio);
+      })
+      .catch(error => console.error('Erro ao carregar o cardápio:', error));
+  }
+
+  function exibirCardapio(cardapio, filtroCategoria = 'todas', termoPesquisa = '') {
+    const container = document.getElementById('cardapio-container');
+    container.innerHTML = ''; // Limpa o container
+
+    const categorias = ['pizzas', 'massas', 'risotos', 'sobremesas'];
+    categorias.forEach(categoria => {
+      if (filtroCategoria === 'todas' || filtroCategoria === categoria) {
+        cardapio.cardapio[categoria].forEach(item => {
+          if (item.nome.toLowerCase().includes(termoPesquisa.toLowerCase())) {
+            const card = criarCard(item);
+            container.appendChild(card);
+          }
+        });
+      }
+    });
+  }
+
+  function criarCard(item) {
+    const card = document.createElement('div');
+    card.classList.add('card');
+
+    const nome = document.createElement('h2');
+    nome.textContent = item.nome;
+
+    const ingredientes = document.createElement('p');
+    ingredientes.textContent = 'Ingredientes: ' + item.ingredientes.join(', ');
+
+    const imagem = document.createElement('img');
+    imagem.src = item.imagem;
+    imagem.alt = item.nome;
+
+    const info = document.createElement('div');
+    info.classList.add('info');
+
+    const valor = document.createElement('p');
+    valor.classList.add('valor');
+    valor.textContent = 'R$ ' + item.valor.toFixed(2);
+
+    const quantidadeContainer = document.createElement('div');
+    quantidadeContainer.classList.add('quantidade-container');
+
+    const quantidadeLabel = document.createElement('label');
+    quantidadeLabel.textContent = 'Qtd:';
+    quantidadeLabel.setAttribute('for', 'quantidade-' + item.nome);
+
+    const quantidadeInput = document.createElement('input');
+    quantidadeInput.type = 'number';
+    quantidadeInput.id = 'quantidade-' + item.nome;
+    quantidadeInput.min = 1;
+    quantidadeInput.value = 1;
+    quantidadeInput.classList.add('quantidade-input');
+
+    quantidadeContainer.appendChild(quantidadeLabel);
+    quantidadeContainer.appendChild(quantidadeInput);
+
+    info.appendChild(valor);
+    info.appendChild(quantidadeContainer);
+
+    const comprarBtn = document.createElement('button');
+    comprarBtn.textContent = 'Comprar';
+    comprarBtn.classList.add('comprar-btn');
+    comprarBtn.onclick = () => adicionarAoCarrinho(item, quantidadeInput.value);
+
+    card.appendChild(nome);
+    card.appendChild(ingredientes);
+    card.appendChild(imagem);
+    card.appendChild(info);
+    card.appendChild(comprarBtn);
+
+    return card;
+  }
+
+  function adicionarAoCarrinho(item, quantidade) {
+    console.log(`Adicionado ao carrinho: ${item.nome}, Quantidade: ${quantidade}`);
+    
+    const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+    
+    carrinho.push({
+      nome: item.nome,
+      quantidade: parseInt(quantidade),
+      valor: item.valor,
+      imagem: item.imagem
+    });
+
+    sessionStorage.setItem('carrinho', JSON.stringify(carrinho));
+    window.location.href = 'calculo.html';
+  }
+
+  document.getElementById('filtro-categoria').addEventListener('change', (event) => {
+    const filtroCategoria = event.target.value;
+    const termoPesquisa = document.getElementById('barra-pesquisa').value;
+    exibirCardapio(window.cardapio, filtroCategoria, termoPesquisa);
+  });
+
+  document.getElementById('barra-pesquisa').addEventListener('input', (event) => {
+    const termoPesquisa = event.target.value;
+    const filtroCategoria = document.getElementById('filtro-categoria').value;
+    exibirCardapio(window.cardapio, filtroCategoria, termoPesquisa);
+  });
+
+  window.onload = function() {
+    carregarCardapio();
+  };
+
   </script>
 </body>
 </html>
