@@ -122,66 +122,78 @@
         </div>
 
         <label for="caixinha">Valor da Caixinha:</label>
+        <input type="number" id="caixinha" step="0.01" placeholder="Digite o valor da caixinha">
 
-        <button id="calcular">Calcular</button>
         <div id="resultado">
             <!-- O resultado do cálculo será exibido aqui -->
         </div>
 
         <!-- Botão para continuar comprando -->
         <a id="continuar-comprando" href='produtos.html'>Continuar comprando</a>
+
+        <!-- Botão para finalizar compra -->
+        <button id="finalizar-compra">Finalizar Compra</button>
     </div>
 
     <script>
     function carregarProdutosDoCarrinho() {
-    const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
-    const container = document.getElementById('produtos-selecionados');
+        const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+        const container = document.getElementById('produtos-selecionados');
 
-    container.innerHTML = ''; // Limpe o contêiner antes de adicionar os itens
-    carrinho.forEach((produto, index) => {
-        const produtoDiv = document.createElement('div');
-        produtoDiv.classList.add('produto');
+        container.innerHTML = ''; // Limpe o contêiner antes de adicionar os itens
+        carrinho.forEach((produto, index) => {
+            const produtoDiv = document.createElement('div');
+            produtoDiv.classList.add('produto');
 
-        const img = document.createElement('img');
-        img.src = produto.imagem;
-        img.alt = produto.nome;
+            const img = document.createElement('img');
+            img.src = produto.imagem;
+            img.alt = produto.nome;
 
-        const p = document.createElement('p');
-        p.textContent = `${produto.quantidade}x ${produto.nome} - R$ ${(produto.quantidade * produto.valor).toFixed(2)}`;
+            const p = document.createElement('p');
+            p.textContent = `${produto.quantidade}x ${produto.nome} - R$ ${(produto.quantidade * produto.valor).toFixed(2)}`;
 
-        produtoDiv.appendChild(img);
-        produtoDiv.appendChild(p);
-        container.appendChild(produtoDiv);
+            produtoDiv.appendChild(img);
+            produtoDiv.appendChild(p);
+            container.appendChild(produtoDiv);
 
-        const excluirBtn = document.createElement('img');
-        excluirBtn.src = './imagens/excluir.png';
-        excluirBtn.alt = 'Excluir';
-        excluirBtn.classList.add('excluir-icon');
-        excluirBtn.onclick = () => excluirDoCarrinho(index); // Chama a função de exclusão com o índice do produto
-        produtoDiv.appendChild(excluirBtn);
-    });
-}
+            const excluirBtn = document.createElement('img');
+            excluirBtn.src = './imagens/excluir.png';
+            excluirBtn.alt = 'Excluir';
+            excluirBtn.classList.add('excluir-icon');
+            excluirBtn.onclick = () => excluirDoCarrinho(index); // Chama a função de exclusão com o índice do produto
+            produtoDiv.appendChild(excluirBtn);
+        });
 
-function excluirDoCarrinho(index) {
-    const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
-    carrinho.splice(index, 1); // Remove o item do array do carrinho com base no índice
-    sessionStorage.setItem('carrinho', JSON.stringify(carrinho)); // Atualiza a sessionStorage
-    carregarProdutosDoCarrinho(); // Recarrega os produtos do carrinho para atualizar a exibição
-}
+        calcularTotal();
+    }
 
-document.addEventListener('DOMContentLoaded', function() {
-    carregarProdutosDoCarrinho();
+    function excluirDoCarrinho(index) {
+        const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+        carrinho.splice(index, 1); // Remove o item do array do carrinho com base no índice
+        sessionStorage.setItem('carrinho', JSON.stringify(carrinho)); // Atualiza a sessionStorage
+        carregarProdutosDoCarrinho(); // Recarrega os produtos do carrinho para atualizar a exibição
+    }
 
-    document.getElementById('calcular').addEventListener('click', function() {
+    function calcularTotal() {
         const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
         let caixinha = parseFloat(document.getElementById('caixinha').value) || 0;
-        const frete = 10; // Valor do frete (exemplo)
         let total = carrinho.reduce((acc, produto) => acc + (produto.quantidade * produto.valor), 0);
-        total += caixinha + frete; // Adiciona o valor da caixinha e do frete
+        total += caixinha; // Adiciona o valor da caixinha
 
         document.getElementById('resultado').textContent = `Total: R$ ${total.toFixed(2)}`;
+        sessionStorage.setItem('total', total.toFixed(2)); // Armazena o total no sessionStorage
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        carregarProdutosDoCarrinho();
+
+        document.getElementById('caixinha').addEventListener('input', calcularTotal); // Atualiza total ao mudar o valor da caixinha
+
+        document.getElementById('finalizar-compra').addEventListener('click', function() {
+            // Redireciona para a página de confirmação
+            window.location.href = 'confirmacao.html';
+        });
     });
-});
     </script>
 </body>
 </html>

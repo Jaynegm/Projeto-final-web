@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Pedido</title>
+    <style>
+        body {
+            background: #D1D0A3;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        #produtos-confirmados {
+            margin-bottom: 20px;
+        }
+
+        .produto {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+        }
+
+        .produto img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .produto p {
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        #total {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #mensagem {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: green;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4357AD;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #8390FA;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Confirmação de Pedido</h1>
+
+        <div id="produtos-confirmados">
+            <!-- Os produtos confirmados serão exibidos aqui -->
+        </div>
+
+        <div id="total">
+            <!-- O valor total será exibido aqui -->
+        </div>
+
+        <div id="mensagem">Pedido realizado com sucesso!</div>
+
+        <button onclick="window.location.href='login.html'">Sair</button>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+        const total = sessionStorage.getItem('total');
+        const container = document.getElementById('produtos-confirmados');
+
+        container.innerHTML = '';
+        carrinho.forEach(produto => {
+            const produtoDiv = document.createElement('div');
+            produtoDiv.classList.add('produto');
+
+            const img = document.createElement('img');
+            img.src = produto.imagem;
+            img.alt = produto.nome;
+
+            const p = document.createElement('p');
+            p.textContent = `${produto.quantidade}x ${produto.nome} - R$ ${(produto.quantidade * produto.valor).toFixed(2)}`;
+
+            produtoDiv.appendChild(img);
+            produtoDiv.appendChild(p);
+            container.appendChild(produtoDiv);
+        });
+
+        document.getElementById('total').textContent = `Total: R$ ${total}`;
+    });
+    </script>
+</body>
+</html>
