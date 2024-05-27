@@ -83,11 +83,6 @@ app.get('/calculo.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'calculo.html'));
 });
 
-// Endpoint para adicionar produtos ao carrinho e redirecionar para a página de cálculo
-function adicionarAoCarrinho(item, quantidade) {
-    console.log(`Adicionado ao carrinho: ${item.nome}, Quantidade: ${quantidade}`);
-    window.location.href = '/calculo.html'; // Redireciona para a página de cálculo
-  }
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);

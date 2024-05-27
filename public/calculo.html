@@ -3,45 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora</title>
+    <title>Carrinho</title>
+    <style>
+        body {
+            background: #D1D0A3;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        #produtos-selecionados {
+            margin-bottom: 20px;
+        }
+
+        .produto {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 5px 0;
+            position: relative; /* Adicionado para posicionar o ícone de exclusão */
+        }
+
+        .produto img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .produto p {
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        label {
+            font-size: 1.2em;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: calc(100% - 80px); /* Reduzindo a largura para melhor visualização */
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4357AD;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #8390FA;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #continuar-comprando {
+            text-align: center;
+            padding: 10px;
+            display: block;
+            margin-bottom: 20px; /* Aumentando a margem inferior */
+        }
+
+        /* Estilos para o ícone de exclusão */
+        .excluir-icon {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Calculadora</h1>
+    <div class="container">
+        <h1>Carrinho</h1>
 
-    <div id="produtos-selecionados">
-        <!-- Os produtos selecionados serão exibidos aqui -->
-    </div>
+        <div id="produtos-selecionados">
+            <!-- Os produtos selecionados serão exibidos aqui -->
+        </div>
 
-    <label for="caixinha">Valor da Caixinha:</label>
-    <input type="number" id="caixinha" name="caixinha">
+        <label for="caixinha">Valor da Caixinha:</label>
 
-    <button id="calcular">Calcular</button>
+        <button id="calcular">Calcular</button>
+        <div id="resultado">
+            <!-- O resultado do cálculo será exibido aqui -->
+        </div>
 
-    <div id="resultado">
-        <!-- O resultado do cálculo será exibido aqui -->
+        <!-- Botão para continuar comprando -->
+        <a id="continuar-comprando" href='produtos.html'>Continuar comprando</a>
     </div>
 
     <script>
-        // Função para carregar os produtos do carrinho da sessionStorage
-        function carregarProdutosDoCarrinho() {
-            const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
-            const container = document.getElementById('produtos-selecionados');
+    function carregarProdutosDoCarrinho() {
+    const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+    const container = document.getElementById('produtos-selecionados');
 
-            carrinho.forEach(produto => {
-                const p = document.createElement('p');
-                p.textContent = `${produto.quantidade}x ${produto.nome} - R$ ${(produto.quantidade * produto.valor).toFixed(2)}`;
-                container.appendChild(p);
-            });
-        }
+    container.innerHTML = ''; // Limpe o contêiner antes de adicionar os itens
+    carrinho.forEach((produto, index) => {
+        const produtoDiv = document.createElement('div');
+        produtoDiv.classList.add('produto');
 
-        document.addEventListener('DOMContentLoaded', function() {
-            carregarProdutosDoCarrinho();
+        const img = document.createElement('img');
+        img.src = produto.imagem;
+        img.alt = produto.nome;
 
-            document.getElementById('calcular').addEventListener('click', function() {
-                // Lógica para calcular a soma dos valores dos produtos e a caixinha
-                // Aqui você pode usar a lógica que já implementou ou adaptar conforme necessário
-            });
-        });
+        const p = document.createElement('p');
+        p.textContent = `${produto.quantidade}x ${produto.nome} - R$ ${(produto.quantidade * produto.valor).toFixed(2)}`;
+
+        produtoDiv.appendChild(img);
+        produtoDiv.appendChild(p);
+        container.appendChild(produtoDiv);
+
+        const excluirBtn = document.createElement('img');
+        excluirBtn.src = './imagens/excluir.png';
+        excluirBtn.alt = 'Excluir';
+        excluirBtn.classList.add('excluir-icon');
+        excluirBtn.onclick = () => excluirDoCarrinho(index); // Chama a função de exclusão com o índice do produto
+        produtoDiv.appendChild(excluirBtn);
+    });
+}
+
+function excluirDoCarrinho(index) {
+    const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+    carrinho.splice(index, 1); // Remove o item do array do carrinho com base no índice
+    sessionStorage.setItem('carrinho', JSON.stringify(carrinho)); // Atualiza a sessionStorage
+    carregarProdutosDoCarrinho(); // Recarrega os produtos do carrinho para atualizar a exibição
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    carregarProdutosDoCarrinho();
+
+    document.getElementById('calcular').addEventListener('click', function() {
+        const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+        let caixinha = parseFloat(document.getElementById('caixinha').value) || 0;
+        const frete = 10; // Valor do frete (exemplo)
+        let total = carrinho.reduce((acc, produto) => acc + (produto.quantidade * produto.valor), 0);
+        total += caixinha + frete; // Adiciona o valor da caixinha e do frete
+
+        document.getElementById('resultado').textContent = `Total: R$ ${total.toFixed(2)}`;
+    });
+});
     </script>
 </body>
 </html>

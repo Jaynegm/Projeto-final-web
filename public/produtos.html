@@ -26,7 +26,6 @@
       justify-content: space-around;
     }
 
-   
     .card {
       background: #fff;
       border: 2px solid #EBF8B8;
@@ -129,6 +128,7 @@
   </div>
 
   <script>
+    // Função para carregar o cardápio a partir de um arquivo JSON
     function carregarCardapio() {
       fetch('cardapio.json')
         .then(response => response.json())
@@ -206,12 +206,6 @@
       comprarBtn.classList.add('comprar-btn');
       comprarBtn.onclick = () => adicionarAoCarrinho(item, quantidadeInput.value);
 
-      // Endpoint para adicionar produtos ao carrinho e redirecionar para a página de cálculo
-    function adicionarAoCarrinho(item, quantidade) {
-    console.log(`Adicionado ao carrinho: ${item.nome}, Quantidade: ${quantidade}`);
-    window.location.href = '/calculo.html'; // Redireciona para a página de cálculo
-  }
-
       card.appendChild(nome);
       card.appendChild(ingredientes);
       card.appendChild(imagem);
@@ -220,6 +214,27 @@
 
       return card;
     }
+
+    function adicionarAoCarrinho(item, quantidade) {
+  console.log(`Adicionado ao carrinho: ${item.nome}, Quantidade: ${quantidade}`);
+  
+  // Recupere o carrinho da sessionStorage ou inicialize-o como um array vazio
+  const carrinho = JSON.parse(sessionStorage.getItem('carrinho')) || [];
+
+  // Adicione o produto selecionado ao carrinho, incluindo o caminho da imagem
+  carrinho.push({
+    nome: item.nome,
+    quantidade: parseInt(quantidade), // Converta a quantidade para um número inteiro
+    valor: item.valor,
+    imagem: item.imagem // Inclua o caminho da imagem
+  });
+
+  // Atualize o carrinho na sessionStorage
+  sessionStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+  // Redirecione para a página de cálculo
+  window.location.href = 'calculo.html';
+}
 
     window.onload = function() {
       carregarCardapio();
