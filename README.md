@@ -1,5 +1,5 @@
 Projeto Cardápio Online para Restaurante
-Descrição
+
 Este projeto consiste na criação de um cardápio online para um restaurante, utilizando as funcionalidades aprendidas durante as aulas. O objetivo é proporcionar uma interface amigável e funcional para gerenciamento e visualização dos produtos oferecidos pelo restaurante.
 
 Funcionalidades
