@@ -82,6 +82,10 @@ function carregarProdutos() {
 app.get('/calculo.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'calculo.html'));
 });
+//página de confirmação compra
+app.get('/confirmacao.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'confirmacao.html'));
+});
 
 
 app.listen(PORT, () => {
