@@ -27,5 +27,3 @@ Este projeto consiste na criação de um cardápio online para um restaurante, u
 - **Front End**: HTML, CSS, JavaScript
 - **Back End**: Node.js, Express.js
 - **Banco de Dados**: JSON (Cardapio.JSON)
-
-## Estrutura do Projeto
