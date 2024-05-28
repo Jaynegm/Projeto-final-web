@@ -8,11 +8,17 @@ Banco de Dados em JSON: O projeto utiliza um arquivo Cardapio.JSON como API, con
 Telas do Sistema:
 
 Cadastro: Formulário para novos usuários se cadastrarem.
+
 Cadastro Realizado com Sucesso: Confirmação visual de cadastro bem-sucedido.
+
 Login: Tela de login, com verificação de usuários cadastrados.
+
 Listagem de Produtos: Visualização dos produtos disponíveis no cardápio.
+
 Carrinho: Adição e remoção de produtos, com cálculo dinâmico de valores e opção de adicionar gorjeta.
+
 Confirmação do Pedido: Tela de confirmação de pedido com resumo das compras.
+
 Autenticação de Usuários: Implementação de funcionalidade que impede o cadastro de usuários já existentes e permite login apenas para usuários cadastrados.
 
 Conexão Front End e API: Navegação fluida entre as telas com integração completa com a API JSON. O sistema redireciona automaticamente após ações como cadastro e login.
